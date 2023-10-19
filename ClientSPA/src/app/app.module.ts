@@ -29,7 +29,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     HomeComponent,
     RegisterComponent,
     MemberListComponent,
-    MemberDetailComponent,
+    //MemberDetailComponent,//this is standalone
     ListsComponent,
     MessagesComponent,
     TestErrorComponent,
