@@ -13,7 +13,9 @@ import { MembersService } from 'src/app/_services/members.service';
   styleUrls: ['./member-edit.component.scss']
 })
 export class MemberEditComponent implements OnInit {
+  //this to access forms within the component
   @ViewChild('editForm') editForm: NgForm | undefined;
+  //this is for browser navigation control
   @HostListener('window:beforeunload', ['$event']) unloadNotification($event: any) {
     if (this.editForm?.dirty) {
       $event.returnValue = true;
