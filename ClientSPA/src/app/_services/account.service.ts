@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { User } from '../_models/user';
+import { environment } from 'src/environments/environment.development';
 
 //Angular service is singleton. This is intiantiated when our application starts and destroyed when application stops.
 //This is different from component because component is destroyed when we move from one component to other.
@@ -10,7 +11,7 @@ import { User } from '../_models/user';
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
