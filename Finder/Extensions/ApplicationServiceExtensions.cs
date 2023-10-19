@@ -13,6 +13,7 @@ namespace Finder.Extensions
             services.AddDbContext<DataContext>(options => options.UseSqlServer(config.GetConnectionString("DataContext")));
             services.AddCors();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
