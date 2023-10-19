@@ -20,9 +20,10 @@ namespace Finder.Entities
         public string Country { get; set; }
         public List<Photo> Photos { get; set; } = new();
 
-        public int GetAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        //This is now handled in auto mapper configuration
+        //public int GetAge()
+        //{
+        //    return DateOfBirth.CalculateAge();
+        //}
     }
 }

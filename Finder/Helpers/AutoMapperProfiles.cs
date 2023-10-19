@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Finder.DTOs;
 using Finder.Entities;
+using Finder.Extensions;
 
 namespace Finder.Helpers
 {
@@ -10,7 +11,8 @@ namespace Finder.Helpers
         {
             CreateMap<AppUser, MemberDto>()
             .ForMember(dest => dest.PhotoUrl, opt =>
-                opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).Url));
+                opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain).Url))
+              .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, PhotoDto>();
         }
     }

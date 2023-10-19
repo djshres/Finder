@@ -1,4 +1,6 @@
-﻿using Finder.DTOs;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Finder.DTOs;
 using Finder.Entities;
 using Finder.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -8,20 +10,32 @@ namespace Finder.Data
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(DataContext context)
+        public UserRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public Task<MemberDto> GetMemberAsync(string username)
+        public async Task<MemberDto> GetMemberAsync(string username)
         {
-            throw new NotImplementedException();
+            ////Without using automapper
+            //return await _context.Users
+            //    .Where(x=>x.UserName == username)
+            //    .Select(user=> new MemberDto { UserName = user.UserName,Id = user.Id }).SingleOrDefaultAsync();
+
+            return await _context.Users
+           .Where(x => x.UserName == username)
+           .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+           .SingleOrDefaultAsync();
         }
 
-        public Task<IEnumerable<MemberDto>> GetMembersAsync()
+        public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Users
+          .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+          .ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
