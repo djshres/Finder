@@ -1,4 +1,5 @@
 ﻿using Finder.Data;
+using Finder.Helpers;
 using Finder.Interfaces;
 using Finder.Services;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace Finder.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
 
             return services;
         }
