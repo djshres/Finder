@@ -13,18 +13,6 @@ export class MembersService {
 
   constructor(private http: HttpClient) { }
 
-  // getMembers() {
-  //   return this.http.get<Member[]>(this.baseUrl + 'users');
-  // }
-
-  // getMember(username: string) {
-  //   return this.http.get<Member>(this.baseUrl + 'users/' + username);
-  // }
-
-  // updateMember(member: Member) {
-  //   return this.http.put(this.baseUrl + 'users', member);
-  // }
-
   getMembers() {
     if (this.members.length > 0) return of(this.members);
     return this.http.get<Member[]>(this.baseUrl + 'users').pipe(
@@ -49,6 +37,27 @@ export class MembersService {
       })
     )
   }
+
+  setMainPhoto(photoId: number) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photoId, {});
+  }
+
+  deletePhoto(photoId: number) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
+  // getMembers() {
+  //   return this.http.get<Member[]>(this.baseUrl + 'users');
+  // }
+
+  // getMember(username: string) {
+  //   return this.http.get<Member>(this.baseUrl + 'users/' + username);
+  // }
+
+  // updateMember(member: Member) {
+  //   return this.http.put(this.baseUrl + 'users', member);
+  // }
+
 
   // getHttpOptions() {
   //   const userString = localStorage.getItem('user');
