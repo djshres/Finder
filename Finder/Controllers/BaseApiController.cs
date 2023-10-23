@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Finder.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Finder.Controllers
 {
-    [Route("api/[controller]")]
+    [ServiceFilter(typeof(LogUserActivity))]
     [ApiController]
+    [Route("api/[controller]")]
     public class BaseApiController : ControllerBase
     {
+
     }
 }
