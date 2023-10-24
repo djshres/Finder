@@ -13,13 +13,16 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
   paginatedResult: PaginatedResult<Member[]> = new PaginatedResult<Member[]>;
+  memberCache = new Map();
+  userParams: UserParams | undefined;
 
   constructor(private http: HttpClient) { }
 
  
   getMembers(userParams: UserParams) {
-    // const response = this.memberCache.get(Object.values(userParams).join('-'));
-    // if (response) return of(response);
+    //this is for caching of member hai
+    const response = this.memberCache.get(Object.values(userParams).join('-'));
+    if (response) return of(response);
 
     let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
@@ -30,15 +33,25 @@ export class MembersService {
 
     return this.getPaginatedResult<Member[]>(this.baseUrl + 'users', params).pipe(
       map(response => {
-        // this.memberCache.set(Object.values(userParams).join('-'), response);
+        this.memberCache.set(Object.values(userParams).join('-'), response);//this is for member caching
         return response;
       })
     )
   }
 
+  // getMember(username: string) {
+  //   const member = this.members.find(x => x.userName === username);
+  //   if (member !== undefined) return of(member);
+  //   return this.http.get<Member>(this.baseUrl + 'users/' + username);
+  // }
+
   getMember(username: string) {
-    const member = this.members.find(x => x.userName === username);
-    if (member !== undefined) return of(member);
+    const member = [...this.memberCache.values()]
+      .reduce((arr, elem) => arr.concat(elem.result), [])
+      .find((member: Member) => member.userName === username);
+
+    if (member) return of(member);
+    
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
@@ -121,6 +134,12 @@ export class MembersService {
   // }
 
   // getMember(username: string) {
+  //   return this.http.get<Member>(this.baseUrl + 'users/' + username);
+  // }
+
+  // getMember(username: string) {
+  //   const member = this.members.find(x => x.userName === username);
+  //   if (member !== undefined) return of(member);
   //   return this.http.get<Member>(this.baseUrl + 'users/' + username);
   // }
 
